@@ -3,7 +3,7 @@
 -export ([handle_request/1]).
 
 handle_request(Request) ->
-  Cmd = "ruby ~/development/mochirack/ebin/hello_world.rb",
+  Cmd = "ruby ebin/mochirack.rb",
   Port = open_port({spawn, Cmd}, [{packet, 4}, use_stdio, exit_status, binary]), 
   Payload = term_to_binary({env, build_env(Request)}),
   port_command(Port, Payload),
@@ -14,7 +14,7 @@ handle_request(Request) ->
   end.
   
 build_env(Request) ->
-  io:format("~p~n", [Request:get(headers)]),
+  % io:format("~p~n", [Request:get(headers)]),
   {Path, Query, _Fragment} = mochiweb_util:urlsplit_path(Request:get(raw_path)),
   [Host, Port] = string:tokens(Request:get_header_value("host"), ":"),
   {
