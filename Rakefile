@@ -1,7 +1,7 @@
 task :default => :build
 
 desc "build files required to run app"
-task :build => ["erlang:compile", "erlang:app", "erlang:ruby"]
+task :build => ["erlang:compile", "erlang:app", "erlang:ruby", "erlang:rackup"]
 
 namespace :erlang do
   
@@ -30,5 +30,14 @@ namespace :erlang do
   rule(/ebin\/.+\.rb/ => [proc{|rb| rb.sub(/ebin/, 'src')}]) do |rb|
     copy rb.source, rb.name
   end
+  
+  RACKUP_SRC = FileList["src/**/*.ru"]
+  RACKUP_OUT = RACKUP_SRC.sub(/src/, 'ebin')
+  desc "copy rackup files from src to ebin"
+  task :rackup => RACKUP_OUT
+  rule(/ebin\/.+\.ru/ => [proc{|ru| ru.sub(/ebin/, 'src')}]) do |ru|
+    copy ru.source, ru.name
+  end
+
   
 end

@@ -26,9 +26,7 @@ loop(Req, _DocRoot) ->
         Method when Method =:= 'GET'; Method =:= 'HEAD' ->
             case Path of
                 _ ->
-                    Req:ok({"text/plain", rack:handle_request(Req)})
-                    % Req:ok({"text/plain", <<"Testing">>})
-                    % Req:serve_file(Path, DocRoot)
+                    Req:ok({"text/html", rack:handle_request(Req)})
             end;
         'POST' ->
             case Path of
